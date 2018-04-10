@@ -1,0 +1,44 @@
+#!/usr/bin/python3
+import argparse
+
+p=argparse.ArgumentParser()
+p.add_argument("source_file", help="Name of the expected answer file.", type=str)
+p.add_argument("your_ans", help="Name of the answer file you generated.", type=str)
+argu=p.parse_args()
+
+answer_wanted = argu.source_file
+answer_generated = argu.your_ans
+
+aw=open(answer_wanted,"r")
+ag=open(answer_generated,"r")
+aw_length=0
+ag_length=0
+flg=0
+for line in aw:
+	aw_length+=1
+for line in ag:
+	ag_length+=1
+aw.seek(0)
+ag.seek(0)
+print("\n")
+if(aw_length>ag_length):
+	print("\tWARNING! The length of EXPECTED answer file is greater than length of GENERATED answer file!\n")
+elif(aw_length<ag_length):
+	print("\tWARNING! The length of GENERATED answer file is greater than length of EXPECTED answer file!\n")
+no_of_errors=0
+for i in range(aw_length):
+	fs = aw.readline().strip()
+	ss = ag.readline().strip()
+	if fs!=ss:
+		error_msg="Expected: "+str(fs)+"\tYour answer: "+str(ss)+"\t At line number: "+str(i+1)
+		print(error_msg)
+		flg=1
+		no_of_errors+=1
+
+if flg==0:
+	print("\tNo errors Found!")
+elif flg==1:
+	print("\n\tNumber of errors: "+str(no_of_errors)+"\tout of total answers: "+str(ag_length))
+print("\tScanning Complete!")
+aw.close()
+ag.close()

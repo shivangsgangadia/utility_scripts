@@ -1,0 +1,25 @@
+#!/usr/bin/python3
+
+import datetime
+import os
+import argparse
+from subprocess import call
+
+p=argparse.ArgumentParser()
+p.add_argument("extension",help="Type extension of new file.",type=str)
+s=p.parse_args()
+
+
+x=1
+date_set=datetime.datetime.now().strftime("%d_%b_")
+filename=date_set+(str(x)+"."+s.extension)
+while(os.path.isfile(filename)):
+	x+=1
+	filename=date_set+(str(x)+"."+s.extension)
+
+f=open(filename,'w')
+f.close()
+searchterm ="/usr/bin/"+str(s.extension)+"_template"
+if(os.path.isfile(searchterm)):
+        call(["cp",searchterm,filename])
+call(["vim",filename])
