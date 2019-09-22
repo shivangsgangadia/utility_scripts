@@ -1,0 +1,13 @@
+mkdir src
+mkdir libs
+touch build.gradle
+cd src
+mkdir main
+mkdir tests
+cd main
+mkdir java
+mkdir webapp
+cd webapp
+mkdir WEB-INF
+cd WEB-INF
+touch web.xml

@@ -1,0 +1,27 @@
+#!/usr/bin/python3
+import argparse
+import os
+
+arguments = argparse.ArgumentParser()
+arguments.add_argument("project_type", help = "Enter type of Gradle Project", type = str)
+arguments.add_argument("project_name", help = "Name of project", type = str)
+
+parsed_args = arguments.parse_args()
+
+project_type = parsed_args.project_type
+project_name = parsed_args.project_name
+
+dir_structure = "./structs/" + project_type
+
+try:
+    commands_file = open(dir_structure, "r")
+    new_dir = "mkdir " + project_name + "\n"
+    enter_dir = new_dir + "cd " + project_name + "\n"
+    command_set = ""
+    command_set += enter_dir
+    for line in commands_file:
+        command_set += str(line) + "\n"
+    os.system(command_set)
+    commands_file.close()
+except Exception as e:
+    print("Invalid project type")

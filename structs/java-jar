@@ -1,0 +1,8 @@
+mkdir src
+mkdir libs
+touch build.gradle
+cd src
+mkdir main
+mkdir test
+cd main
+mkdir java
