@@ -1,6 +1,7 @@
 #Takes files from ldd and copies them into a folder named data
 import argparse
 import os
+from pathlib import Path
 
 p = argparse.ArgumentParser()
 p.add_argument("file_name", help = "Name of executable", type=str)
@@ -9,28 +10,26 @@ s = p.parse_args()
 file_name = s.file_name
 
 def get_path(line):
-	i = 0
-	l = len(line)
-	ans = ""
-	while(i<l):
-		if(line[i]=='/'):
-			j=i
-			while(line[j]!=' '):
-				j+=1
-			ans = line[i:j]
-			break
-		i+=1
-	return ans
+    if '=>' in line:
+        path = line.split(' => ')[1].split(' (')[0]
+    else:
+        path = line.split(' (')[0]
+    return path.strip()
 command = "ldd "+file_name+" > files.txt"
 os.system(command)
 
 f = open("files.txt","r")
 os.system("mkdir data")
 for line in f:
-	source_file = get_path(line)
-	new_file = "./data"
-	comm = "cp "+source_file+" "+new_file
-	os.system(comm)
+    source_file = get_path(line)
+    print("Path: " + source_file)
+    directory = Path("data" + str(Path(source_file).parent.absolute()))
+    directory.mkdir(parents=True, exist_ok=True)
+    print("Parent: " + str(directory))
+    comm = "cp " + source_file + " " + str(directory)
+    print(comm)
+    os.system(comm)
+    print("--------------------------")
 
 f.close()
 print("Done!")
